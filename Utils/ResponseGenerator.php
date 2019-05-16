@@ -5,8 +5,6 @@ namespace Yireo\CorsHack\Utils;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Response\HttpInterface as HttpResponse;
-use Magento\Framework\App\Response\RedirectInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class ResponseGenerator
@@ -15,29 +13,18 @@ use Psr\Log\LoggerInterface;
 class ResponseGenerator
 {
     /**
-     * @var RedirectInterface
-     */
-    private $redirect;
-
-    /**
      * @var ScopeConfigInterface
      */
     private $scopeConfig;
-
-    private $logger;
 
     /**
      * HeaderGenerator constructor.
      * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
-        RedirectInterface $redirect,
-        ScopeConfigInterface $scopeConfig,
-        LoggerInterface $logger
+        ScopeConfigInterface $scopeConfig
     ) {
-        $this->redirect = $redirect;
         $this->scopeConfig = $scopeConfig;
-        $this->logger = $logger;
     }
 
     /**
@@ -52,7 +39,6 @@ class ResponseGenerator
         $headers = $this->getAccessControlAllowHeaders();
         $response->setHeader('Access-Control-Allow-Headers', implode(',', $headers), true);
         $response->setHeader('Access-Control-Allow-Credentials', 'true');
-        $response->setHeader('X-Fart-Signal', 'butts');
 
         return $response;
     }
@@ -76,8 +62,6 @@ class ResponseGenerator
 
         foreach (array_unique($storedOrigins) as $origin) {
             $pattern = '~' . trim($origin) . '~';
-
-            $this->logger->error($pattern);
 
             if (preg_match($pattern, $url) === 1) {
                 $url = parse_url($url);
