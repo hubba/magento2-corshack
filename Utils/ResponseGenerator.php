@@ -33,8 +33,8 @@ class ResponseGenerator
      */
     public function modifyResponse(HttpResponse $response): HttpResponse
     {
-        $domains = $this->getAccessControlAllowOriginDomains();
-        $response->setHeader('Access-Control-Allow-Origin', implode(', ', $domains));
+        $domain = $this->getAccessControlAllowOriginDomain();
+        $response->setHeader('Access-Control-Allow-Origin', $domain);
 
         $headers = $this->getAccessControlAllowHeaders();
         $response->setHeader('Access-Control-Allow-Headers', implode(',', $headers), true);
@@ -46,26 +46,31 @@ class ResponseGenerator
     /**
      * @return string
      */
-    private function getAccessControlAllowOriginDomains(): array
+    private function getAccessControlAllowOriginDomain(): string
     {
-        $domains = [];
-
         $storedOrigins = (string) $this->scopeConfig->getValue('corshack/settings/origin');
+
+        $url = isset($_SERVER['HTTP_ORIGIN'])
+            ? $_SERVER['HTTP_ORIGIN']
+            : (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
+
+        if (!$url) {
+            return '';
+        }
+
         $storedOrigins = explode(',', $storedOrigins);
-        foreach ($storedOrigins as $storedOrigin) {
-            $storedOrigin = trim($storedOrigin);
-            if (!empty($storedOrigin)) {
-                $domains[] = $storedOrigin;
+
+        foreach (array_unique($storedOrigins) as $origin) {
+            $pattern = '~' . trim($origin) . '~';
+
+            if (preg_match($pattern, $url) === 1) {
+                $url = parse_url($url);
+
+                return $url['scheme'] . '://' . $url['host'] . (isset($url['port']) ? ':' . $url['port'] : '');
             }
         }
 
-        $domains = array_unique($domains);
-
-        if (count($domains) > 1) {
-            $domains = ['*'];
-        }
-
-        return $domains;
+        return '';
     }
 
     /**

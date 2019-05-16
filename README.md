@@ -13,10 +13,6 @@ composer require yireo-training/magento2-corshack
 ```
 
 ### Configuration
-Navigate to **Advanced > Yireo CorsHack** and add your URLs to the **Origin Domain** option.
+Navigate to **Advanced > Yireo CorsHack** and add your URLs to the **Origin Domain** option (comma-separated).
 
-By default, the following URLs work right away:
-- `http://localhost/`
-- `http://localhost:3000/`
-
-If you want all domains to match, add a wildcard (`*`) to the **Origin Domain** option.
+URLs are matched using `preg_match()` so you can enter regular expressions to get technical on your matching.
