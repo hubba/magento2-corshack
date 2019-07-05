@@ -21,11 +21,11 @@ use Magento\Framework\App\Response\Http as Response;
 use Yireo\CorsHack\Utils\ResponseGenerator;
 
 /**
- * Class ControllerPlugin
+ * Class GraphQlControllerPlugin
  *
  * @package Yireo\CorsHack\Plugin
  */
-class ControllerPlugin
+class GraphQlControllerPlugin
 {
     /**
      * @var ResponseInterface

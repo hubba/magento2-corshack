@@ -11,6 +11,9 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Magento\GraphQl\Controller\GraphQl">
-        <plugin name="Yireo_CorsHack_GraphQl" type="Yireo\CorsHack\Plugin\ControllerPlugin" />
+        <plugin name="Yireo_CorsHack_GraphQl" type="Yireo\CorsHack\Plugin\GraphQlControllerPlugin" />
+    </type>
+    <type name="Magento\Webapi\Controller\Rest">
+        <plugin name="Yireo_CorsHack_Rest" type="Yireo\CorsHack\Plugin\RestControllerPlugin" />
     </type>
 </config>
