@@ -50,8 +50,8 @@ class ResponseGenerator
     {
         $storedOrigins = (string) $this->scopeConfig->getValue('corshack/settings/origin');
 
-        $url = isset($_SERVER['HTTP_ORIGIN'])
-            ? $_SERVER['HTTP_ORIGIN']
+        $url = isset($_SERVER['HTTP_HOST'])
+            ? ($_SERVER['HTTPS'] ? 'https://' : 'http://') . $_SERVER['HTTP_HOST']
             : (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 
         if (!$url) {
