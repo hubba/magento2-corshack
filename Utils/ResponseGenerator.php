@@ -82,10 +82,6 @@ class ResponseGenerator
      */
     private function getAccessControlAllowHeaders(): array
     {
-        $headers = [];
-        $headers[] = 'Content-Type';
-        $headers[] = 'Authorization';
-
-        return $headers;
+        return ['Authorization', 'Content-Type', 'Store'];
     }
 }
